@@ -13,3 +13,4 @@ librouteros
 paramiko
 pyotp
 python-dotenv
+pydantic-settings
