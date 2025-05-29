@@ -2,11 +2,11 @@
 FROM node:20 AS build
 
 WORKDIR /app
-COPY package.json ./
-RUN npm install
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
 COPY . .
-RUN npm run build
+RUN yarn build
 
 # Production nginx stage
 FROM nginx:alpine
