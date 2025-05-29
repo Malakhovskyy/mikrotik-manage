@@ -1,7 +1,3 @@
----
-
-## 23. `docker-compose.yml` (project root!)
-```yaml
 version: "3.8"
 services:
   db:
