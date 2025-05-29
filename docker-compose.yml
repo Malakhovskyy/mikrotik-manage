@@ -1,0 +1,73 @@
+---
+
+## 23. `docker-compose.yml` (project root!)
+```yaml
+version: "3.8"
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: mikrotik
+      POSTGRES_PASSWORD: supersecret
+      POSTGRES_DB: mikrotikdb
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  redis:
+    image: redis:7
+    networks:
+      - backend
+
+  backend:
+    build: ./backend
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://mikrotik:supersecret@db:5432/mikrotikdb
+      - REDIS_URL=redis://redis:6379/0
+      - ENCRYPTION_KEY=PLEASE_SET_A_STRONG_KEY
+      - JWT_SECRET=PLEASE_CHANGE_THIS
+      - ADMIN_EMAIL=admin@local
+      - ADMIN_PASSWORD=admin
+    depends_on:
+      - db
+      - redis
+    networks:
+      - backend
+
+  worker:
+    build: ./backend
+    command: celery -A app.tasks.celery_app worker --loglevel=info
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://mikrotik:supersecret@db:5432/mikrotikdb
+      - REDIS_URL=redis://redis:6379/0
+      - ENCRYPTION_KEY=PLEASE_SET_A_STRONG_KEY
+      - JWT_SECRET=PLEASE_CHANGE_THIS
+      - ADMIN_EMAIL=admin@local
+      - ADMIN_PASSWORD=admin
+    depends_on:
+      - backend
+      - db
+      - redis
+    networks:
+      - backend
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - backend
+
+volumes:
+  db_data:
+
+networks:
+  backend:

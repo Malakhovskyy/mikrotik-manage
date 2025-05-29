@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+SQLAlchemy>=2
+asyncpg
+alembic
+python-jose[cryptography]
+passlib[bcrypt]
+cryptography
+pydantic
+celery[redis]
+redis
+librouteros
+paramiko
+pyotp
+python-dotenv
