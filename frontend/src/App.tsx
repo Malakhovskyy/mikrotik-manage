@@ -11,6 +11,7 @@ import SettingsGeneral from "./pages/SettingsGeneral";
 import Settings2FA from "./pages/Settings2FA";
 import SettingsEmail from "./pages/SettingsEmail";
 import DeviceGroups from "./pages/DeviceGroups";
+import UserSettings from "./pages/UserSettings";
 import Sidebar from "./components/Sidebar";
 
 function PrivateLayout({ children }: { children: React.ReactNode }) {
@@ -43,6 +44,7 @@ function App() {
                 <Route path="/settings/general" element={<SettingsGeneral />} />
                 <Route path="/settings/2fa" element={<Settings2FA />} />
                 <Route path="/settings/email" element={<SettingsEmail />} />
+                <Route path="/user-settings" element={<UserSettings />} />
                 <Route path="*" element={<Navigate to="/dashboard" />} />
               </Routes>
             </PrivateLayout>

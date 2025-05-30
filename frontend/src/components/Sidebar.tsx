@@ -1,7 +1,7 @@
 
 
 import React, { useState } from "react";
-import { Drawer, List, ListItemButton, ListItemText, Collapse, ListItemIcon } from "@mui/material";
+import { Drawer, List, ListItemButton, ListItemText, Collapse, ListItemIcon, Box } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import DevicesIcon from "@mui/icons-material/Devices";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
@@ -14,7 +14,9 @@ import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 import EmailIcon from "@mui/icons-material/Email";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const Sidebar: React.FC = () => {
   const [openDevices, setOpenDevices] = useState(false);
@@ -22,9 +24,18 @@ const Sidebar: React.FC = () => {
   const [openSettings, setOpenSettings] = useState(false);
   const navigate = useNavigate();
 
+  const userEmail = localStorage.getItem("user_email") || "User";
+  const handleUserSettings = () => navigate("/user-settings");
+
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    navigate("/login");
+  };
+
   return (
     <Drawer variant="permanent" anchor="left">
-      <List sx={{ width: 240 }}>
+      <Box sx={{ display: "flex", flexDirection: "column", height: "100%", width: 240 }}>
+        <List>
         <ListItemButton onClick={() => navigate("/dashboard")}> 
           <ListItemIcon><DashboardIcon /></ListItemIcon>
           <ListItemText primary="Dashboard" />
@@ -92,7 +103,27 @@ const Sidebar: React.FC = () => {
             </ListItemButton>
           </List>
         </Collapse>
-      </List>
+        </List>
+        <Box sx={{ flexGrow: 1 }} />
+        <List>
+          <ListItemButton onClick={handleUserSettings}>
+            <ListItemIcon>
+              <AccountCircleIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={userEmail}
+              secondary="User Settings"
+              primaryTypographyProps={{ fontWeight: "bold" }}
+            />
+          </ListItemButton>
+          <ListItemButton onClick={handleLogout}>
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItemButton>
+        </List>
+      </Box>
     </Drawer>
   );
 };
