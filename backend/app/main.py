@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.api.v1 import auth
 from app.core.config import settings
+print("[DEBUG] Loaded admin password:", settings.admin_password)
 from app.models.user import User, Base
 from app.core.security import get_password_hash
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
