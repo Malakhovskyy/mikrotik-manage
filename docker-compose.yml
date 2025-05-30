@@ -22,18 +22,14 @@ services:
 
   backend:
     build: ./backend
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     volumes:
       - ./backend:/app
     ports:
       - "8000:8000"
-    # environment:
-    #   - DATABASE_URL=postgresql+asyncpg://mikrotik:supersecret@db:5432/mikrotikdb
-    #   - REDIS_URL=redis://redis:6379/0
-    #   - ENCRYPTION_KEY=PLEASE_SET_A_STRONG_KEY
-    #   - JWT_SECRET=PLEASE_CHANGE_THIS
-    #   - ADMIN_EMAIL=admin@local
-    #   - ADMIN_PASSWORD=admin
+    environment:
+      - PYTHONPATH=/app
+      # Uncomment the next line to enable auto-migration on every start (for dev only)
+      - AUTO_MIGRATE=true
     depends_on:
       db:
         condition: service_healthy
