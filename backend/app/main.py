@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1 import auth
 from app.core.config import settings
 print("[DEBUG] Loaded admin password:", settings.admin_password)
@@ -9,6 +10,14 @@ from sqlalchemy.orm import sessionmaker
 import asyncio
 
 app = FastAPI(title="Mikrotik Manager")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Change this to your frontend URL in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])
 
