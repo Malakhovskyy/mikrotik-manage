@@ -10,4 +10,6 @@ COPY ./worker ./worker
 COPY ./alembic ./alembic
 COPY ./alembic.ini ./alembic.ini
 
+ENV PYTHONPATH=/app
+
 CMD alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000
