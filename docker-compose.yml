@@ -10,6 +10,11 @@ services:
       - db_data:/var/lib/postgresql/data
     networks:
       - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mikrotik"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:7
@@ -29,8 +34,10 @@ services:
       - ADMIN_EMAIL=admin@local
       - ADMIN_PASSWORD=admin
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
     networks:
       - backend
 
@@ -47,9 +54,12 @@ services:
       - ADMIN_EMAIL=admin@local
       - ADMIN_PASSWORD=admin
     depends_on:
-      - backend
-      - db
-      - redis
+      backend:
+        condition: service_started
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
     networks:
       - backend
 
