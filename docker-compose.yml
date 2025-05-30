@@ -27,13 +27,13 @@ services:
       - ./backend:/app
     ports:
       - "8000:8000"
-    environment:
-      - DATABASE_URL=postgresql+asyncpg://mikrotik:supersecret@db:5432/mikrotikdb
-      - REDIS_URL=redis://redis:6379/0
-      - ENCRYPTION_KEY=PLEASE_SET_A_STRONG_KEY
-      - JWT_SECRET=PLEASE_CHANGE_THIS
-      - ADMIN_EMAIL=admin@local
-      - ADMIN_PASSWORD=admin
+    # environment:
+    #   - DATABASE_URL=postgresql+asyncpg://mikrotik:supersecret@db:5432/mikrotikdb
+    #   - REDIS_URL=redis://redis:6379/0
+    #   - ENCRYPTION_KEY=PLEASE_SET_A_STRONG_KEY
+    #   - JWT_SECRET=PLEASE_CHANGE_THIS
+    #   - ADMIN_EMAIL=admin@local
+    #   - ADMIN_PASSWORD=admin
     depends_on:
       db:
         condition: service_healthy
