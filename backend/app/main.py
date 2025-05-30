@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1 import auth
+from app.api.v1 import system_settings
 from app.core.config import settings
 print("[DEBUG] Loaded admin password:", settings.admin_password)
 from app.models.user import User, Base
@@ -20,6 +21,7 @@ app.add_middleware(
 )
 
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])
+app.include_router(system_settings.router)
 
 # DB setup (duplicate from app/db.py just for initial admin create)
 engine = create_async_engine(settings.database_url, echo=True)
