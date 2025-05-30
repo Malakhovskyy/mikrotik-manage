@@ -10,7 +10,7 @@ services:
     networks:
       - backend
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U mikrotikdb"]
+      test: ["CMD-SHELL", "pg_isready -U mikrotik"]
       interval: 5s
       timeout: 5s
       retries: 5
